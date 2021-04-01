@@ -1,7 +1,14 @@
+import 'reflect-metadata';
+import 'dotenv/config';
+
+import './database';
+
+import './shared/container';
+
 import express from 'express';
 import cors from 'cors';
 
-import routes from './routes';
+import { routes } from './routes';
 
 const app = express();
 

@@ -1,12 +1,12 @@
 import { Router } from 'express';
 
-import boardsRoutes from './modules/users/routes/boards.routes';
-import rolesRoutes from './modules/users/routes/roles.routes';
-import sessionsRoutes from './modules/users/routes/sessions.routes';
-import usersRoutes from './modules/users/routes/users.routes';
-import citiesRoutes from './modules/locations/routes/cities.routes';
-import countriesRoutes from './modules/locations/routes/countries.routes';
-import ufsRoutes from './modules/locations/routes/ufs.routes';
+import { boardsRoutes } from './modules/workers/routes/boards.routes';
+import { rolesRoutes } from './modules/workers/routes/roles.routes';
+import { sessionsRoutes } from './modules/workers/routes/sessions.routes';
+import { usersRoutes } from './modules/workers/routes/users.routes';
+import { citiesRoutes } from './modules/locations/routes/cities.routes';
+import { countriesRoutes } from './modules/locations/routes/countries.routes';
+import { statesRoutes } from './modules/locations/routes/states.routes';
 
 const routes = Router();
 
@@ -17,7 +17,7 @@ routes.use('/roles', rolesRoutes);
 routes.use('/users', usersRoutes);
 
 routes.use('/countries', countriesRoutes);
-routes.use('/ufs', ufsRoutes);
+routes.use('/states', statesRoutes);
 routes.use('/cities', citiesRoutes);
 
-export default routes;
+export { routes };

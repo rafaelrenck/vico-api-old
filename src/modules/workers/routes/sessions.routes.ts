@@ -6,4 +6,4 @@ sessionsRoutes.get('/', (request, response) => {
   return response.status(200).json({ message: 'Welcome' });
 });
 
-export default sessionsRoutes;
+export { sessionsRoutes };

@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  database:
+    image: postgres
+    container_name: db_vico
+    restart: always
+    ports:
+      - 5432:${DB_PORT}
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    volumes:
+      - pgdata:/data/postgres
+volumes:
+  pgdata:
