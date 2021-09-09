@@ -1,10 +1,4 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-  TableUnique,
-} from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class CreateBoards1616610384481 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -14,16 +8,23 @@ export class CreateBoards1616610384481 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'uuid',
+            type: 'varchar',
             isPrimary: true,
+          },
+          {
+            name: 'initials',
+            type: 'varchar(8)',
+            isUnique: true,
           },
           {
             name: 'board',
             type: 'varchar',
+            isUnique: true,
           },
           {
-            name: 'state',
-            type: 'uuid',
+            name: 'active',
+            type: 'boolean',
+            default: true,
           },
           {
             name: 'created_at',
@@ -33,31 +34,11 @@ export class CreateBoards1616610384481 implements MigrationInterface {
           {
             name: 'updated_at',
             type: 'timestamp with time zone',
-            default: 'now()',
-          },
-          {
-            name: 'deleted_at',
-            type: 'timestamp with time zone',
             isNullable: true,
           },
         ],
       })
     );
-
-    const foreignKey = new TableForeignKey({
-      columnNames: ['state'],
-      referencedColumnNames: ['id'],
-      referencedTableName: 'states',
-      onDelete: 'CASCADE',
-    });
-
-    await queryRunner.createForeignKey('boards', foreignKey);
-
-    const uniqueConstraint = new TableUnique({
-      columnNames: ['board', 'state'],
-    });
-
-    await queryRunner.createUniqueConstraint('boards', uniqueConstraint);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

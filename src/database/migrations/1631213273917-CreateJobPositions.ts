@@ -1,20 +1,25 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateRoles1616610343998 implements MigrationInterface {
+export class CreateJobPositions1631213273917 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'roles',
+        name: 'job_positions',
         columns: [
           {
             name: 'id',
-            type: 'uuid',
+            type: 'varchar',
             isPrimary: true,
           },
           {
-            name: 'role',
+            name: 'job_position',
             type: 'varchar',
             isUnique: true,
+          },
+          {
+            name: 'active',
+            type: 'boolean',
+            default: true,
           },
           {
             name: 'created_at',
@@ -24,11 +29,6 @@ export class CreateRoles1616610343998 implements MigrationInterface {
           {
             name: 'updated_at',
             type: 'timestamp with time zone',
-            default: 'now()',
-          },
-          {
-            name: 'deleted_at',
-            type: 'timestamp with time zone',
             isNullable: true,
           },
         ],
@@ -37,6 +37,6 @@ export class CreateRoles1616610343998 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('roles');
+    await queryRunner.dropTable('job_positions');
   }
 }

@@ -8,7 +8,7 @@ export class CreateStates1616510470704 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'uuid',
+            type: 'varchar',
             isPrimary: true,
           },
           {
@@ -22,17 +22,17 @@ export class CreateStates1616510470704 implements MigrationInterface {
             isUnique: true,
           },
           {
+            name: 'active',
+            type: 'boolean',
+            default: true,
+          },
+          {
             name: 'created_at',
             type: 'timestamp with time zone',
             default: 'now()',
           },
           {
             name: 'updated_at',
-            type: 'timestamp with time zone',
-            default: 'now()',
-          },
-          {
-            name: 'deleted_at',
             type: 'timestamp with time zone',
             isNullable: true,
           },

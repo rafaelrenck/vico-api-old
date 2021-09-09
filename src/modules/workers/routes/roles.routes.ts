@@ -1,9 +1,10 @@
 import { Router } from 'express';
+import { CreateRoleController } from '../useCases/createRole/CreateRoleController';
 
 const rolesRoutes = Router();
 
-rolesRoutes.get('/', (request, response) => {
-  return response.status(200).json({ message: 'Welcome' });
-});
+const createRoleController = new CreateRoleController();
+
+rolesRoutes.post('/', createRoleController.handle);
 
 export { rolesRoutes };
