@@ -1,29 +1,28 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
-@Entity('roles')
-class Role {
+@Entity('job_positions')
+class JobPosition {
   @PrimaryColumn()
   id: string;
 
   @Column({ unique: true })
-  role: string;
+  job_position: string;
+
+  @Column({ default: true })
+  active: boolean;
 
   @CreateDateColumn()
   created_at: Date;
 
-  @UpdateDateColumn()
-  updated_at: Date;
-
-  @DeleteDateColumn({ nullable: true })
-  deleted_at: Date | null = null;
+  @UpdateDateColumn({ nullable: true })
+  updated_at: Date | null = null;
 
   constructor() {
     if (!this.id) {
@@ -32,4 +31,4 @@ class Role {
   }
 }
 
-export { Role };
+export { JobPosition };

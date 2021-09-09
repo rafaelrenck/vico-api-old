@@ -1,6 +1,6 @@
 import { getRepository, Repository } from 'typeorm';
 
-import { Role } from '../../entities/Role';
+import { Role } from '../../entities/JobPosition';
 import { CreateRoleDTO } from '../../useCases/createRole/CreateRoleDTO';
 import { IRolesRepository } from '../IRolesRepository';
 

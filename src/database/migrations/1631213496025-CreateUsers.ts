@@ -31,7 +31,6 @@ export class CreateUsers1631213496025 implements MigrationInterface {
             type: 'enum',
             enumName: 'type',
             enum: ['Funcionário', 'Prestador', 'Ambos'],
-            isNullable: false,
           },
           {
             name: 'email',

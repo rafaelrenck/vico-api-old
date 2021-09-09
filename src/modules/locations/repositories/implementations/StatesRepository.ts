@@ -11,8 +11,8 @@ class StatesRepository implements IStatesRepository {
     this.repository = getRepository(State);
   }
 
-  async create(userData: CreateStateDTO): Promise<void> {
-    const newState = this.repository.create(userData);
+  async create(stateData: CreateStateDTO): Promise<void> {
+    const newState = this.repository.create(stateData);
 
     await this.repository.save(newState);
 

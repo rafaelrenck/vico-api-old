@@ -1,7 +1,6 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   PrimaryColumn,
   UpdateDateColumn,
@@ -19,14 +18,14 @@ class State {
   @Column({ unique: true })
   state: string;
 
+  @Column({ default: true })
+  active: boolean;
+
   @CreateDateColumn()
   created_at: Date;
 
-  @UpdateDateColumn()
-  updated_at: Date;
-
-  @DeleteDateColumn({ nullable: true })
-  deleted_at: Date | null = null;
+  @UpdateDateColumn({ nullable: true })
+  updated_at: Date | null = null;
 
   constructor() {
     if (!this.id) {
