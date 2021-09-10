@@ -6,8 +6,8 @@ import { StatesRepository } from '../../modules/locations/repositories/implement
 import { IBoardsRepository } from '../../modules/users/repositories/IBoardsRepository';
 import { BoardsRepository } from '../../modules/users/repositories/implementations/BoardsRepository';
 
-import { IRolesRepository } from '../../modules/users/repositories/IRolesRepository';
-import { RolesRepository } from '../../modules/users/repositories/implementations/RolesRepository';
+import { IJobPositionsRepository } from '../../modules/users/repositories/IJobPositionsRepository';
+import { JobPositionsRepository } from '../../modules/users/repositories/implementations/JobPositionsRepository';
 
 import { IUsersRepository } from '../../modules/users/repositories/IUsersRepository';
 import { UsersRepository } from '../../modules/users/repositories/implementations/UsersRepository';
@@ -22,9 +22,9 @@ container.registerSingleton<IBoardsRepository>(
   BoardsRepository
 );
 
-container.registerSingleton<IRolesRepository>(
-  'RolesRepository',
-  RolesRepository
+container.registerSingleton<IJobPositionsRepository>(
+  'JobPositionsRepository',
+  JobPositionsRepository
 );
 
 container.registerSingleton<IUsersRepository>(

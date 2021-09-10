@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { CreateRoleController } from '../useCases/createRole/CreateRoleController';
+import { CreateJobPositionController } from '../useCases/createJobPosition/CreateJobPositionController';
 
 const jobPositionsRoutes = Router();
 
-const createRoleController = new CreateRoleController();
+const createJobPositionController = new CreateJobPositionController();
 
-jobPositionsRoutes.post('/', createRoleController.handle);
+jobPositionsRoutes.post('/', createJobPositionController.handle);
 
 export { jobPositionsRoutes };
