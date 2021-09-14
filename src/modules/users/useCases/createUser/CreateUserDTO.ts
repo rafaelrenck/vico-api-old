@@ -1,20 +1,23 @@
 import { UserGender, UserType } from '../../entities/User';
 
 interface CreateUserDTO {
-  name: string;
-  username: string;
-  password: string;
+  full_name: string;
+  short_name: string;
+  type: UserType;
   email?: string;
   phone?: string;
-  date_of_birth: Date;
-  gender: UserGender;
+  date_of_birth?: Date;
+  show_birthday?: boolean;
+  gender?: UserGender;
   rg?: string;
-  cpf: string;
+  cpf?: string;
   pis?: string;
-  type: UserType;
-  role: string;
+  job_position: string;
   board?: string;
+  board_state?: string;
   board_registry?: string;
+  username: string;
+  password: string;
 }
 
 export { CreateUserDTO };

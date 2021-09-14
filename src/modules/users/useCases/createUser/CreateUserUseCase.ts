@@ -14,9 +14,9 @@ class CreateUserUseCase {
   async execute(userData: CreateUserDTO): Promise<void> {
     const passwordHash = await hash(userData.password, 8);
 
-    const user = { ...userData, password: passwordHash };
+    const newUser = { ...userData, password: passwordHash };
 
-    await this.usersRepository.create(user);
+    await this.usersRepository.create(newUser);
 
     return;
   }

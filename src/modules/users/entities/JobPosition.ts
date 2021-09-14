@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from './User';
 import { v4 as uuid } from 'uuid';
 
 @Entity('job_positions')
@@ -18,11 +20,14 @@ class JobPosition {
   @Column({ default: true })
   active: boolean;
 
-  @CreateDateColumn()
-  created_at: Date;
+  @OneToMany(() => User, (user) => user.jobPosition)
+  users: User[];
 
-  @UpdateDateColumn({ nullable: true })
-  updated_at: Date | null = null;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at', nullable: true })
+  updatedAt: Date | null = null;
 
   constructor() {
     if (!this.id) {

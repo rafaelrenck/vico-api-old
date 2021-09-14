@@ -21,11 +21,11 @@ class Board {
   @Column({ default: true })
   active: boolean;
 
-  @CreateDateColumn()
-  created_at: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
-  @UpdateDateColumn({ nullable: true })
-  updated_at: Date | null = null;
+  @UpdateDateColumn({ name: 'updated_at', nullable: true })
+  updatedAt: Date | null = null;
 
   constructor() {
     if (!this.id) {

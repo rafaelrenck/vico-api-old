@@ -1,10 +1,10 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   ManyToOne,
   PrimaryColumn,
+  JoinColumn,
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
@@ -13,30 +13,30 @@ import { JobPosition } from './JobPosition';
 import { State } from '../../locations/entities/State';
 import { v4 as uuid } from 'uuid';
 
-export enum UserGender {
-  MALE = 'Masculino',
-  FEMALE = 'Feminino',
-  UNKNOWN = 'Não Informado',
-}
-
 export enum UserType {
   EMPLOYEE = 'Funcionário',
   PROVIDER = 'Prestador',
   BOTH = 'Ambos',
 }
 
+export enum UserGender {
+  MALE = 'Masculino',
+  FEMALE = 'Feminino',
+  UNKNOWN = 'Não Informado',
+}
+
 @Entity('users')
-@Unique('name_unique', ['full_name', 'date_of_birth'])
-@Unique('board_unique', ['board_id', 'board_state_id', 'board_registry'])
+@Unique('nameUnique', ['fullName', 'dateOfBirth'])
+@Unique('boardUnique', ['board', 'boardState', 'boardRegistry'])
 class User {
   @PrimaryColumn()
   id: string;
 
-  @Column()
-  full_name: string;
+  @Column({ name: 'full_name' })
+  fullName: string;
 
-  @Column()
-  short_name: string;
+  @Column({ name: 'short_name' })
+  shortName: string;
 
   @Column({
     type: 'enum',
@@ -50,11 +50,11 @@ class User {
   @Column({ nullable: true })
   phone: string | null = null;
 
-  @Column({ nullable: true })
-  date_of_birth: Date | null = null;
+  @Column({ name: 'date_of_birth', nullable: true })
+  dateOfBirth: Date | null = null;
 
-  @Column({ default: true })
-  show_birthday: boolean;
+  @Column({ name: 'show_birthday', default: true })
+  showBirthday: boolean;
 
   @Column({
     type: 'enum',
@@ -72,23 +72,26 @@ class User {
   @Column({ unique: true, nullable: true })
   pis: string | null = null;
 
-  @ManyToOne(() => JobPosition)
-  job_position_id: string;
+  @ManyToOne(() => JobPosition, (jobPosition) => jobPosition.users)
+  @JoinColumn({ name: 'job_position_id' })
+  jobPosition: string;
 
   @ManyToOne(() => Board, { nullable: true })
-  board_id: string;
+  @JoinColumn({ name: 'board_id' })
+  board: string;
 
   @ManyToOne(() => State, { nullable: true })
-  board_state_id: string;
+  @JoinColumn({ name: 'board_state_id' })
+  boardState: string;
 
-  @Column({ nullable: true })
-  board_registry: string | null = null;
+  @Column({ name: 'board_registry', nullable: true })
+  boardRegistry: string | null = null;
 
-  @Column({ nullable: true })
-  digital_sign: string | null = null;
+  @Column({ name: 'digital_sign', nullable: true })
+  digitalSign: string | null = null;
 
-  @Column({ type: 'text', nullable: true })
-  text_sign: string | null = null;
+  @Column({ name: 'text_sign', type: 'text', nullable: true })
+  textSign: string | null = null;
 
   @Column({ nullable: true })
   photo: string | null = null;
@@ -99,11 +102,11 @@ class User {
   @Column()
   password: string;
 
-  @Column({ default: true })
-  password_is_temporary: boolean;
+  @Column({ name: 'password_is_temporary', default: true })
+  passwordIsTemporary: boolean;
 
-  @Column({ default: 0 })
-  bad_logins: number;
+  @Column({ name: 'bad_logins', default: 0 })
+  badLogins: number;
 
   @Column({ default: false })
   blocked: boolean;
@@ -111,11 +114,11 @@ class User {
   @Column({ default: true })
   active: boolean;
 
-  @CreateDateColumn()
-  created_at: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
-  @UpdateDateColumn({ nullable: true })
-  updated_at: Date | null = null;
+  @UpdateDateColumn({ name: 'updated_at', nullable: true })
+  updatedAt: Date | null = null;
 
   constructor() {
     if (!this.id) {
