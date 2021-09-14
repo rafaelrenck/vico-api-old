@@ -50,8 +50,8 @@ class User {
   @Column({ nullable: true })
   phone: string | null = null;
 
-  @Column({ name: 'date_of_birth', nullable: true })
-  dateOfBirth: Date | null = null;
+  @Column({ name: 'date_of_birth', type: 'date', nullable: true })
+  dateOfBirth: string | null = null;
 
   @Column({ name: 'show_birthday', default: true })
   showBirthday: boolean;

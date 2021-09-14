@@ -1,5 +1,5 @@
 interface CreateJobPositionDTO {
-  job_position: string;
+  jobPosition: string;
 }
 
 export { CreateJobPositionDTO };

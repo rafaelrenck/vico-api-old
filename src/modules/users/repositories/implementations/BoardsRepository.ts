@@ -18,6 +18,18 @@ class BoardsRepository implements IBoardsRepository {
 
     return;
   }
+
+  async findByInitials(initials: string): Promise<Board> {
+    const searchBoard = await this.repository.findOne({ initials });
+
+    return searchBoard;
+  }
+
+  async findByBoard(board: string): Promise<Board> {
+    const searchBoard = await this.repository.findOne({ board });
+
+    return searchBoard;
+  }
 }
 
 export { BoardsRepository };

@@ -14,8 +14,8 @@ class JobPosition {
   @PrimaryColumn()
   id: string;
 
-  @Column({ unique: true })
-  job_position: string;
+  @Column({ name: 'job_position', unique: true })
+  jobPosition: string;
 
   @Column({ default: true })
   active: boolean;

@@ -18,6 +18,12 @@ class JobPositionsRepository implements IJobPositionsRepository {
 
     return;
   }
+
+  async findByJobPosition(jobPosition: string): Promise<JobPosition> {
+    const searchJobPosition = await this.repository.findOne({ jobPosition });
+
+    return searchJobPosition;
+  }
 }
 
 export { JobPositionsRepository };

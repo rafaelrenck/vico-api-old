@@ -18,6 +18,18 @@ class StatesRepository implements IStatesRepository {
 
     return;
   }
+
+  async findByInitials(initials: string): Promise<State> {
+    const searchState = await this.repository.findOne({ initials });
+
+    return searchState;
+  }
+
+  async findByState(state: string): Promise<State> {
+    const searchState = await this.repository.findOne({ state });
+
+    return searchState;
+  }
 }
 
 export { StatesRepository };
