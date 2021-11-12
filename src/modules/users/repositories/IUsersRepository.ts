@@ -12,7 +12,7 @@ interface IUsersRepository {
     fullName: string,
     dateOfBirth: string
   ): Promise<User>;
-  findByBoardRegistri(
+  findByBoardRegistry(
     board: string,
     boardState: string,
     boardRegistry: string
