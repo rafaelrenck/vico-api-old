@@ -20,13 +20,11 @@ sighRoutes.get('/health_insurances', (request: Request, response: Response) => {
 });
 
 sighRoutes.get('/appointments', (request: Request, response: Response) => {
-  const filter = request.body;
-
   const types = [];
 
-  filter.amb && types.push('AMB');
-  filter.ext && types.push('EXT');
-  filter.int && types.push('INT');
+  request.query.amb === 'true' && types.push('AMB');
+  request.query.ext === 'true' && types.push('EXT');
+  request.query.int === 'true' && types.push('INT');
 
   knex
     .select(
@@ -39,10 +37,10 @@ sighRoutes.get('/appointments', (request: Request, response: Response) => {
     .from('sigh.ficha_amb_int as fia')
     .leftJoin('sigh.pacientes as pac', 'fia.cod_paciente', 'pac.id_paciente')
     .whereBetween('fia.data_atendimento', [
-      startOfMonth(parseISO(filter.month)),
-      endOfMonth(parseISO(filter.month)),
+      startOfMonth(parseISO(request.query.month.toString())),
+      endOfMonth(parseISO(request.query.month.toString())),
     ])
-    .where('fia.cod_convenio', filter.insurance)
+    .where('fia.cod_convenio', request.query.insurance.toString())
     .whereIn('fia.tipo_atend', types)
     .orderBy([
       'fia.tipo_atend',
