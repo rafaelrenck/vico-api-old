@@ -26,19 +26,23 @@ sighRoutes.get('/appointments', (request: Request, response: Response) => {
   request.query.ext === 'true' && types.push('EXT');
   request.query.int === 'true' && types.push('INT');
 
+  const month = new Date(request.query.month.toString());
+
   knex
     .select(
-      'fia.id_fia as id',
+      'fia.id_fia as id_fia',
       'fia.data_atendimento as date',
       'fia.hora_inicio as hour',
       'fia.tipo_atend as type',
-      'pac.nm_paciente as patient'
+      'pac.registro as id_patient',
+      'pac.nm_paciente as patient',
+      'pac.data_nasc as date_of_birth'
     )
     .from('sigh.ficha_amb_int as fia')
     .leftJoin('sigh.pacientes as pac', 'fia.cod_paciente', 'pac.id_paciente')
     .whereBetween('fia.data_atendimento', [
-      startOfMonth(parseISO(request.query.month.toString())),
-      endOfMonth(parseISO(request.query.month.toString())),
+      startOfMonth(month),
+      endOfMonth(month),
     ])
     .where('fia.cod_convenio', request.query.insurance.toString())
     .whereIn('fia.tipo_atend', types)
