@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { Request, Response } from 'express';
+import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
 import { startOfMonth, endOfMonth } from 'date-fns';
 
 import { knexDB as knex } from '../../../database/knex';
@@ -24,10 +25,7 @@ sighRoutes.get(
   async (request: Request, response: Response) => {
     const types = [];
 
-    const month = new Date(request.query.month.toString());
-    console.log(month);
-    console.log(startOfMonth(month));
-    console.log(endOfMonth(month));
+    const month = utcToZonedTime(new Date(request.query.month.toString()), '00:00');
 
     request.query.amb === 'true' && types.push('AMB');
     request.query.ext === 'true' && types.push('EXT');
@@ -64,8 +62,8 @@ sighRoutes.get(
         .orderBy([
           'fia.tipo_atend',
           'fia.data_atendimento',
-          'pac.nm_paciente',
           'fia.hora_inicio',
+          'pac.nm_paciente',
         ])
         .then((results) => {
           return response.json(results);
