@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { Request, Response } from 'express';
-import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
+import { utcToZonedTime } from 'date-fns-tz';
 import { startOfMonth, endOfMonth } from 'date-fns';
 
 import { knexDB as knex } from '../../../database/knex';
@@ -25,14 +25,17 @@ sighRoutes.get(
   async (request: Request, response: Response) => {
     const types = [];
 
-    const month = utcToZonedTime(new Date(request.query.month.toString()), '00:00');
+    const month = utcToZonedTime(
+      new Date(request.query.month.toString()),
+      '00:00'
+    );
 
     request.query.amb === 'true' && types.push('AMB');
     request.query.ext === 'true' && types.push('EXT');
     request.query.int === 'true' && types.push('INT');
 
     if (request.query.invoice === '') {
-      await knex
+      const results = await knex
         .select(
           'fia.id_fia as id_fia',
           'fia.data_atendimento as date',
@@ -64,10 +67,13 @@ sighRoutes.get(
           'fia.data_atendimento',
           'fia.hora_inicio',
           'pac.nm_paciente',
-        ])
-        .then((results) => {
-          return response.json(results);
-        });
+        ]);
+      const totalCount = results.length.toString();
+      const newResults = results.slice(
+        (Number(request.query.page) - 1) * 10,
+        (Number(request.query.page) - 1) * 10 + 10
+      );
+      return response.json({ totalCount, appointments: newResults });
     } else {
       await knex
         .select(
@@ -93,7 +99,10 @@ sighRoutes.get(
         })
         .orderBy(['pac.nm_paciente', 'fia.hora_inicio'])
         .then((results) => {
-          return response.json(results);
+          response.set('x-total-count', results.length.toString());
+          response.set('Access-Control-Expose-Headers', 'x-total-count');
+          const newResults = results.slice(1, 3);
+          return response.json(newResults);
         });
     }
   }
