@@ -69,13 +69,13 @@ sighRoutes.get(
           'pac.nm_paciente',
         ]);
       const totalCount = results.length.toString();
-      const newResults = results.slice(
+      const appointments = results.slice(
         (Number(request.query.page) - 1) * 10,
         (Number(request.query.page) - 1) * 10 + 10
       );
-      return response.json({ totalCount, appointments: newResults });
+      return response.json({ totalCount, appointments });
     } else {
-      await knex
+      const results = await knex
         .select(
           'fia.id_fia as id_fia',
           'fia.data_atendimento as date',
@@ -97,13 +97,13 @@ sighRoutes.get(
           'rem.cod_convenio': request.query.insurance.toString(),
           'rem.numero_fatura': request.query.invoice,
         })
-        .orderBy(['pac.nm_paciente', 'fia.hora_inicio'])
-        .then((results) => {
-          response.set('x-total-count', results.length.toString());
-          response.set('Access-Control-Expose-Headers', 'x-total-count');
-          const newResults = results.slice(1, 3);
-          return response.json(newResults);
-        });
+        .orderBy(['pac.nm_paciente', 'fia.hora_inicio']);
+      const totalCount = results.length.toString();
+      const appointments = results.slice(
+        (Number(request.query.page) - 1) * 10,
+        (Number(request.query.page) - 1) * 10 + 10
+      );
+      return response.json({ totalCount, appointments });
     }
   }
 );
