@@ -3,6 +3,7 @@ import { CreateUserDTO } from '../useCases/createUser/CreateUserDTO';
 
 interface IUsersRepository {
   create(data: CreateUserDTO): Promise<void>;
+  findById(id: string): Promise<User>;
   findByEmail(email: string): Promise<User>;
   findByRG(rg: string): Promise<User>;
   findByCPF(cpf: string): Promise<User>;

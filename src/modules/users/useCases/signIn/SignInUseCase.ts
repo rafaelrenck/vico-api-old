@@ -2,38 +2,33 @@ import { inject, injectable } from 'tsyringe';
 import { compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 
-import { CreateSessionDTO } from '../createSession/CreateSessionDTO';
+import { SignInDTO } from './SignInDTO';
 import { IUsersRepository } from '../../repositories/IUsersRepository';
 import { AppError } from '../../../../errors/AppError';
 
 interface IResponse {
   user: {
-    name: string;
-    email: string;
+    fullName: string;
+    shortName: string;
   };
   token: string;
 }
 
 @injectable()
-class CreateSessionUseCase {
+class SignInUseCase {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository
   ) {}
 
-  async execute(sessionData: CreateSessionDTO): Promise<IResponse> {
-    const userExists = await this.usersRepository.findByUsername(
-      sessionData.username
-    );
+  async execute({ username, password }: SignInDTO): Promise<IResponse> {
+    const userExists = await this.usersRepository.findByUsername(username);
 
     if (!userExists) {
       throw new AppError('Incorrect username or password', 406);
     }
 
-    const passwordMatch = await compare(
-      sessionData.password,
-      userExists.password
-    );
+    const passwordMatch = await compare(password, userExists.password);
 
     if (!passwordMatch) {
       throw new AppError('Incorrect username or password', 406);
@@ -45,10 +40,13 @@ class CreateSessionUseCase {
     });
 
     return {
-      user: { name: userExists.fullName, email: userExists.email },
+      user: {
+        fullName: userExists.fullName,
+        shortName: userExists.shortName,
+      },
       token,
     };
   }
 }
 
-export { CreateSessionUseCase };
+export { SignInUseCase };
