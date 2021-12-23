@@ -5,11 +5,13 @@ import { sign } from 'jsonwebtoken';
 import { SignInDTO } from './SignInDTO';
 import { IUsersRepository } from '../../repositories/IUsersRepository';
 import { AppError } from '../../../../errors/AppError';
+import { Group } from '../../entities/Group';
 
 interface IResponse {
   user: {
     fullName: string;
     shortName: string;
+    groups: Group[];
   };
   token: string;
 }
@@ -43,6 +45,7 @@ class SignInUseCase {
       user: {
         fullName: userExists.fullName,
         shortName: userExists.shortName,
+        groups: userExists.groups,
       },
       token,
     };

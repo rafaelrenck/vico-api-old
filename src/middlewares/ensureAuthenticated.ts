@@ -35,7 +35,7 @@ export async function ensureAuthenticated(
       throw new AppError('User does not exists', 400);
     }
 
-    console.log(user);
+    response.locals.user_id = user_id;
 
     return next();
   } catch {

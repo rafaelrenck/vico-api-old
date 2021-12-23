@@ -20,7 +20,10 @@ class UsersRepository implements IUsersRepository {
   }
 
   async findById(id: string): Promise<User> {
-    const user = await this.repository.findOne({ id });
+    const user = await this.repository.findOne(
+      { id },
+      { relations: ['groups'] }
+    );
 
     return user;
   }
@@ -50,7 +53,10 @@ class UsersRepository implements IUsersRepository {
   }
 
   async findByUsername(username: string): Promise<User> {
-    const searchUser = await this.repository.findOne({ username });
+    const searchUser = await this.repository.findOne(
+      { username },
+      { relations: ['groups'] }
+    );
 
     return searchUser;
   }
