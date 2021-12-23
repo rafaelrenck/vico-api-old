@@ -12,6 +12,9 @@ import { JobPositionsRepository } from '../../modules/users/repositories/impleme
 import { IUsersRepository } from '../../modules/users/repositories/IUsersRepository';
 import { UsersRepository } from '../../modules/users/repositories/implementations/UsersRepository';
 
+import { IGroupsRepository } from '../../modules/users/repositories/IGroupsRepository';
+import { GroupsRepository } from '../../modules/users/repositories/implementations/GroupsRepository';
+
 container.registerSingleton<IStatesRepository>(
   'StatesRepository',
   StatesRepository
@@ -30,4 +33,9 @@ container.registerSingleton<IJobPositionsRepository>(
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository
+);
+
+container.registerSingleton<IGroupsRepository>(
+  'GroupsRepository',
+  GroupsRepository
 );

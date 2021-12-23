@@ -1,3 +1,4 @@
+import { Group } from '../../entities/Group';
 import { UserGender, UserType } from '../../entities/User';
 
 interface CreateUserDTO {
@@ -18,6 +19,7 @@ interface CreateUserDTO {
   boardRegistry?: string;
   username: string;
   password: string;
+  groups: Group[];
 }
 
 export { CreateUserDTO };

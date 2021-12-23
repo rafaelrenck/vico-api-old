@@ -7,11 +7,14 @@ import {
   JoinColumn,
   Unique,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Board } from './Board';
 import { JobPosition } from './JobPosition';
 import { State } from '../../locations/entities/State';
 import { v4 as uuid } from 'uuid';
+import { Group } from './Group';
 
 export enum UserType {
   EMPLOYEE = 'Funcionário',
@@ -110,6 +113,19 @@ class User {
 
   @Column({ default: false })
   blocked: boolean;
+
+  @ManyToMany(() => Group, (group) => group.users)
+  @JoinTable({
+    joinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'group_id',
+      referencedColumnName: 'id',
+    },
+  })
+  groups: Group[];
 
   @Column({ default: true })
   active: boolean;
