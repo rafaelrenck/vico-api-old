@@ -20,6 +20,6 @@ routes.use('/job_positions', jobPositionsRoutes);
 routes.use('/users', usersRoutes);
 routes.use('/groups', groupsRoutes);
 
-routes.use('/sigh', ensureAuthenticated, sighRoutes);
+routes.use('/sigh', sighRoutes);
 
 export { routes };

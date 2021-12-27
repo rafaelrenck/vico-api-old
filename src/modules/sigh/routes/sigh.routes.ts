@@ -2,10 +2,17 @@ import { Router } from 'express';
 import { Request, Response } from 'express';
 import { utcToZonedTime } from 'date-fns-tz';
 import { startOfMonth, endOfMonth } from 'date-fns';
+import multer from 'multer';
+import fs from 'fs';
+import path from 'path';
 
 import { knexDB as knex } from '../../../database/knex';
 
+import uploadConfig from '../../../config/upload';
+
 const sighRoutes = Router();
+
+const uploadDigitalArchive = multer(uploadConfig.upload('archive', 'teste'));
 
 sighRoutes.get('/health_insurances', (request: Request, response: Response) => {
   knex
@@ -34,8 +41,10 @@ sighRoutes.get(
     request.query.ext === 'true' && types.push('EXT');
     request.query.int === 'true' && types.push('INT');
 
+    let results = [];
+
     if (request.query.invoice === '') {
-      const results = await knex
+      results = await knex
         .select(
           'fia.id_fia as id_fia',
           'fia.data_atendimento as date',
@@ -68,14 +77,8 @@ sighRoutes.get(
           'fia.hora_inicio',
           'pac.nm_paciente',
         ]);
-      const totalCount = results.length.toString();
-      const appointments = results.slice(
-        (Number(request.query.page) - 1) * 10,
-        (Number(request.query.page) - 1) * 10 + 10
-      );
-      return response.json({ totalCount, appointments });
     } else {
-      const results = await knex
+      results = await knex
         .select(
           'fia.id_fia as id_fia',
           'fia.data_atendimento as date',
@@ -98,14 +101,33 @@ sighRoutes.get(
           'rem.numero_fatura': request.query.invoice,
         })
         .orderBy(['pac.nm_paciente', 'fia.hora_inicio']);
-      const totalCount = results.length.toString();
-      const appointments = results.slice(
-        (Number(request.query.page) - 1) * 10,
-        (Number(request.query.page) - 1) * 10 + 10
-      );
-      return response.json({ totalCount, appointments });
     }
+    const totalCount = results.length.toString();
+    const appointments = results.slice(
+      (Number(request.query.page) - 1) * 10,
+      (Number(request.query.page) - 1) * 10 + 10
+    );
+    return response.json({ totalCount, appointments });
   }
 );
+
+sighRoutes.post(
+  '/upload/archive/:id',
+  uploadDigitalArchive.single('fia'),
+  (request: Request, response: Response) => {
+    return response.status(200).send();
+  }
+);
+
+sighRoutes.get('/archive/:id', (request: Request, response: Response) => {
+  return response.json({
+    fileExists: fs.existsSync(
+      path.join(
+        path.resolve(__dirname, '..', '..', '..', '..', 'archive'),
+        request.params.id + '_SCAN.PDF'
+      )
+    ),
+  });
+});
 
 export { sighRoutes };
